@@ -1,6 +1,32 @@
+// require('dotenv').config({path: './env'})
+// line 1 is bringing inconsistency to our code. definetely it is correct and we can run it and it will run fine, but it is not 
+// good practise as we are using import and not require. so line 14,15 is differnet way to make it convert into import statement. 
+
+import dotenv from "dotenv"
+
 import mongoose from "mongoose"
 
-import { DB_NAME } from "./constants";
+import { DB_NAME } from "./constants.js";
+
+import connectDB from "./db/index.js";
+
+
+dotenv.config({
+   path: './env'
+})
+
+
+connectDB()
+
+
+
+
+
+
+
+
+
+
 
 
  // this is our approach in which we put everyhting in main index file.
