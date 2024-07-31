@@ -1,6 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js"
-import {User} from "../models/user.models.js"
+import { User } from "../models/user.models.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
@@ -32,12 +32,12 @@ const registerUser = asyncHandler(async (req, res) => {
    // advance condition check
 
    if(
-      [fullname, email, username, password].some((field)=> field?.trim() === "")
+      [fullname, email, username, password].some((field) => field?.trim() === "")
    ){
       throw new ApiError(400, "All fields are required")
    }
 
-   const existedUser = User.findOne({
+   const existedUser = await User.findOne({
       $or: [{ username }, { email }] // this way we will find first username or email which is already in database and we use 
       // $or so that we check upon email and username both at a same time, so with $ sign we can use multiple operators.
    })
@@ -90,13 +90,10 @@ const registerUser = asyncHandler(async (req, res) => {
       new ApiResponse(200, createdUser, "user registered Successfully")
    )
 
+   // res.status(200).json({
+   //    message: "it is created parneet singh gill"
+   // })
 
-
-
-
-   res.status(200).json({
-      message: "it is created parneet singh gill"
-   })
 })
 
 

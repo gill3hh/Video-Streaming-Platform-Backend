@@ -68,7 +68,7 @@ UserSchema.pre("save", async function(next){
 // as this works as a middleware and we know that for a middleware we use next so that it knows now the flag has to move to next.
 
 
-UserSchema.methods.isPasswordCorrect = async function(){
+UserSchema.methods.isPasswordCorrect = async function(password){
    return await bcrypt.compare(password, this.password)
 }
 
