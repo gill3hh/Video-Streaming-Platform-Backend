@@ -34,4 +34,4 @@ const uploadOnCloudinary = async(localFilePath)=> {
 // fs.unlink it works like delete in file system(fs) instead of delete we say unlink and to add we say link. 
 // here we specifically used Sync aswell making sure that this has to be done otherwise we wont go ahead. 
 
-export{uploadOnCloudinary}
+export {uploadOnCloudinary}

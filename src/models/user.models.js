@@ -56,7 +56,7 @@ UserSchema.pre("save", async function(next){
    // case we dont want to encrypt our pass. so this condition if it is not changed directly return nect otherwise first 
    // encrypt and then run next()
 
-   this.password = bcrypt.hash(this.password, 10) // this number is just number of rounds dont worry about too much, give any u like.
+   this.password = await bcrypt.hash(this.password, 10) // this number is just number of rounds dont worry about too much, give any u like.
    next()
 
 })  // these are known as pre hooks, for more info go to mongoose documentation and then middleware,, what it will do
