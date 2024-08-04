@@ -21,7 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
    // take user details from frontend 
 
     const {fullname, email, username, password} = req.body
-    console.log("email: ", email);
+    // console.log("email: ", email);
 
    // now we can check for all feilds with if else and make 5-6 conditions ,, i will also add advance code that sir told to 
    // see how we can do it with one line of code. so i will comment this if code and we will keep only advance code.
@@ -42,6 +42,9 @@ const registerUser = asyncHandler(async (req, res) => {
       // $or so that we check upon email and username both at a same time, so with $ sign we can use multiple operators.
    })
 
+   // console.log(req.files); // images are send as files and when we print it, we get an array of objects, which contains all the 
+   // fields of in our case avatar and coverImage ( postman video : 17:19 (timestamp))
+
    if(existedUser){
       throw new ApiError(409, "User with email or username already exists")
    }
@@ -50,8 +53,13 @@ const registerUser = asyncHandler(async (req, res) => {
    const avatarLocalPath = req.files?.avatar[0]?.path; // we get req.body with express similarly we get req.files with multer and like this we can access all
    // the files such as here we are talking about images. (video 13 logic building : 31:05)
 
-   const coverImageLocalPath = req.files?.coverImage[0]?.path; // we are using ? which is optional which means if this exists then 
+   // const coverImageLocalPath = req.files?.coverImage[0]?.path; // we are using ? which is optional which means if this exists then 
    // give me ortherwise dont give. we also have this in our notes
+
+   let coverImageLocalPath;
+   if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0){
+      coverImageLocalPath = req.files.coverImage[0].path
+   }
 
    if(!avatarLocalPath) {
       throw new ApiError(400, "Avatar file is required")
