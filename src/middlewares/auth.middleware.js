@@ -1,13 +1,13 @@
 // we are creating our own middleware this is for the cookies and jwt, 
 
-import { ApiError } from "../utils/ApiError";
-import { asyncHandler } from "../utils/asyncHandler";
+import { ApiError } from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken"
-import { User } from "../models/user.models";
+import { User } from "../models/user.models.js";
 
 
 
-export const verifyJWT = asyncHandler(async(req, res, next) => {
+export const verifyJWT = asyncHandler(async(req, _  /* sometimes when we dont use res, we can write in this way */ , next) => {
    // here we say either get the token from the cookies or from the header, we can go to postman and see their is a header 
    // in which we get authorization. to understand more we can go through JWT documentation. 
 
@@ -25,7 +25,7 @@ export const verifyJWT = asyncHandler(async(req, res, next) => {
       const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
    
       if(!user){
-         // TODO: discuss about frontend 
+           
          throw new ApiError(401, "Invalid access Token")
       }
    

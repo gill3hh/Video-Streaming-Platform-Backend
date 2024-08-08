@@ -3,6 +3,7 @@ import {ApiError} from "../utils/ApiError.js"
 import { User } from "../models/user.models.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import jwt from "jsonwebtoken";
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -139,9 +140,12 @@ const loginUser = asyncHandler(async (req, res) => {
 
    const {email, username, password} = req.body
 
-   if(!username || !email){
+   if(!username && !email){
       throw new ApiError(400, "username or email is required")
    }
+   // alternative way of above code if we need only one either username or email then
+   // if(!(username || email)){
+   // throw new ApiError(400, "username or email is required")}
 
    const user = await User.findOne({
       $or: [{username}, {email}]
@@ -211,16 +215,75 @@ const logoutUser = asyncHandler(async (req, res)=> {
    return res.status(200)
    .clearCookie("accessToken", options)
    .clearCookie("refreshToken", options)
-   .json(new ApiResponse (200), {}, "User logged out")
+   .json(new ApiResponse (200, {}, "User logged out"))
 
 
+})
+
+
+const refreshAccessToken = asyncHandler(async(req, res) => {
+   // here we are fetching the value of refresh token from the cookies because we will cross check that the person signed it and
+   // its refresh token value matches to the value of refresh token to the one stored in the database, if it matches we will 
+   // re login the person and refresh the token. 
+   const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
+
+   if(!incomingRefreshToken){
+      throw new ApiError(401, "Unautorized request")
+   }
+   // here we will decode the token as we want the raw token which is stored in the database so to do so we need to send our
+   // refresh token secret and then it will give us decoded value of the token becuase otherwise the user sees the 
+   // encrypted value and we store the raw value in the database and here we need that raw value to check. 
+   // method of jwt. 
+
+   try {
+      const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET)
+   
+      // when we created a token in user.models, we gave _id to when creating the token, so when we get the token from cookies
+      // we get the _id and with the help of this we can access the user. so that in i am doing in next line.
+   
+      const user = await User.findById(decodedToken?._id)
+   
+      if(!user){
+         throw new ApiError(401, "Invalid refresh Token")
+      }
+      // here we will verify that the value from the cookie and the value from the database is the same
+      if(incomingRefreshToken !== user?.refreshToken){
+         throw new ApiError(401, "Refresh token is expired or used")
+      }
+   
+      const options = {
+         httpOnly: true,
+         secure: true
+      }
+   
+      const {accessToken, newRefreshToken} = await generateAccessAndRefreshTokens(user._id)
+   
+      return res.status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", newRefreshToken, options)
+      .json(
+         new ApiResponse(
+            200,
+            {accessToken, refreshToken: newRefreshToken},
+            "Access token refreshed"
+         )
+      )
+   } catch (error) {
+      throw new ApiError(401, error?.message || "Invalid refresh Token")
+      
+   }
+
+
+
+   
 })
 
 
 export {
    registerUser,
    loginUser,
-   logoutUser
+   logoutUser,
+   refreshAccessToken
 }
 
 
