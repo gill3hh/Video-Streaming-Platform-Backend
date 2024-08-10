@@ -4,6 +4,7 @@ import { User } from "../models/user.models.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -359,6 +360,8 @@ const updateUserAvatar = asyncHandler(async(req,res)=> {
 
 
 const updateUserCoverImage = asyncHandler(async(req,res)=> {
+   // first i will get the path of the file which i am trying to upload then after i get the path, i will upload it on 
+   // cloudinary and cloudinary will return me url, then i will update that url in my database.
    const coverImageLocalPath = req.file?.path
 
    if(!coverImageLocalPath){
@@ -385,6 +388,154 @@ const updateUserCoverImage = asyncHandler(async(req,res)=> {
 
 })
 
+const getUserChannelProfile = asyncHandler(async(req,res)=> {
+   const {username} = req.params
+
+   if(!username?.trim()){
+      throw new ApiError(400, "username is missing")
+   }
+
+   // User.find({username})
+   // we gonna do in advance way directly but we can do as in above line first find username then get the id and then query.
+
+
+   // first we get the username above from params and now in aggragtion pipeline we used match to find that user through the
+   // username. so we will get that one user who has the above mentioned username and then we will find the subscribers for 
+   // this username
+   const channel = await User.aggregate([
+      // here we will match that username and if it exists we get the username
+      {
+         $match: {
+            username: username?.toLowerCase()
+         }
+      },
+      {
+         // through this pipeline we will get all the subscribers 
+         $lookup: {
+            from: "subscriptions",
+            localField: "_id",
+            // this is we talked about in the diagram and i draw it in ipad.
+            foreignField: "channel",
+            as: "subscribers"
+         }
+
+      },
+      {
+         $lookup: {
+            from: "subscriptions",
+            localField: "_id",
+            // this will give to whom i have subscriber here i is the user
+            foreignField: "subscriber",
+            as: "subscribedTo"
+         }
+      },
+      {
+         // now we will count, so in first field we are the count of my subscribers 
+         // first we will use the field add fields function and in that we will use size function which gives the total
+         // count of the documents.
+         $addFields: {
+            subscribersCount: {
+               $size: "$subscribers"
+            },
+            // here i am getting a count of users i have subscribed to.
+            channelsSubscribedToCount: {
+               $size: "$subscribedTo"
+            },
+            // this takes care of the button that when we go to you tube and we see that if we have already subscribed then shows
+            // subscribed otherwise subscribe. so we will send a true or false to frontend guy and then he will decide what to 
+            // show on page.
+            isSubscribed: {
+               $cond: {
+                  if: {$in: [req.user?._id, "$subscribers.subscriber"] },
+                  then: true,
+                  else: false
+               }
+            } 
+         }
+      },
+      {
+         // we use project to show which fields we want to show and then select the fields. only select the fields needed
+         // we dont want to increase the traffic on the network
+         $project: {
+            fullname: 1,
+            username: 1,
+            subscribersCount: 1,
+            channelsSubscribedToCount: 1,
+            isSubscribed: 1,
+            avatar: 1,
+            coverImage: 1,
+            email: 1
+
+            
+         }
+      }
+   ])
+
+   if(!channel?.length){
+      throw new ApiError(404, "Channel does not exists")
+   }
+
+   return res.status(200)
+   .json(new ApiResponse(200, channel[0], "User channel fetched successfully"))
+
+}) 
+
+const getWatchHistory = asyncHandler(async(req, res)=> {
+   const user = await User.aggregate([
+      {
+         $match: {
+            _id: new mongoose.Types.ObjectId(req.user._id)
+         }
+      },
+      {
+         $lookup: {
+            from: "videos",
+            localField: "watchHistory",
+            foreignField: "_id",
+            as: "watchHistory",
+            // to make it nested we can use pipeline and in that we can again use lookup it will create it nested
+            pipeline: [
+               {
+                  $lookup: {
+                     from: "users",
+                     localField: "owner",
+                     foreignField: "_id",
+                     as: "owner",
+                     // again sub pipeline as i dont want all the fields of the user so it will only project these 3 fields of the 
+                     // user.
+                     pipeline: [
+                        {
+                           $project: {
+                              fullname: 1,
+                              username: 1,
+                              avatar: 1
+                           }
+                        }]
+                  }
+
+               },
+               {
+                  $addFields: {
+                     // this way we will get the first value as we know that we will get a array as return for owner.
+                     owner: {
+                        $first: "$owner"
+                     }
+                  }
+               }
+            ]
+
+         
+         }
+      }
+   ])
+
+   return res.status(200)
+   .json(new ApiResponse(
+      200, 
+      user[0].watchHistory, 
+      "watch history fetched successfully" ))
+
+})
 
 
 
@@ -397,7 +548,9 @@ export {
    getCurrentUser,
    updateAccountDetails,
    updateUserAvatar,
-   updateUserCoverImage
+   updateUserCoverImage,
+   getUserChannelProfile,
+   getWatchHistory
 }
 
 
