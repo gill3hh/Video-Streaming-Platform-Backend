@@ -19,7 +19,7 @@ export const verifyJWT = asyncHandler(async(req, _  /* sometimes when we dont us
          throw new ApiError(401, "Unauthorized request")
       }
       // we decode our token and jwt gives us a method verify to directly verify our token if only we have the write token it will 
-      // also us to login. this is checked through the token secret key, if it matches then we have right thing and it gives us access.
+      // also us to logout. this is checked through the token secret key, if it matches then we have right thing and it gives us access.
       const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
    
       const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
