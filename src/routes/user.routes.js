@@ -44,7 +44,7 @@ router.route("/current-user").get(verifyJWT, getCurrentUser)
 // to use patch as it will only affect portion of the resource.
 router.route("/update-account").patch(verifyJWT, updateAccountDetails)
 router.route("/avatar").patch(verifyJWT, upload.single("avatar"), updateUserAvatar)
-router.route("/cover-image").patch(verifyJWT, upload.single("/coverImage"), updateUserCoverImage)
+router.route("/cover-image").patch(verifyJWT, upload.single("coverImage"), updateUserCoverImage)
 
 // we will write in this way route for getting user channel because we are getting it from params and this is the syntax to get 
 // it from params
