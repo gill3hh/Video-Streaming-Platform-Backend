@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import {Playlist} from "../models/playlist.model.js";
-import {Video} from "../models/video.model.js";
-import asyncMiddleware from "../utils/asyncHandler.js";
+import {Playlist} from "../models/playlist.models.js";
+import {Video} from "../models/video.models.js";
+import {asyncHandler} from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const createNewPlaylist = asyncMiddleware(async (req, res) => {
+const createNewPlaylist = asyncHandler(async (req, res) => {
     const { name, description } = req.body;
 
     if (!name || !description) {
@@ -27,7 +27,7 @@ const createNewPlaylist = asyncMiddleware(async (req, res) => {
         .json(new ApiResponse(200, newPlaylist, "Playlist successfully created"));
 });
 
-const modifyPlaylist = asyncMiddleware(async (req, res) => {
+const modifyPlaylist = asyncHandler(async (req, res) => {
     const { name, description } = req.body;
     const { playlistId } = req.params;
 
@@ -60,7 +60,7 @@ const modifyPlaylist = asyncMiddleware(async (req, res) => {
         .json(new ApiResponse(200, updatedPlaylist, "Playlist successfully updated"));
 });
 
-const removePlaylist = asyncMiddleware(async (req, res) => {
+const removePlaylist = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
 
     if (!mongoose.isValidObjectId(playlistId)) {
@@ -84,7 +84,7 @@ const removePlaylist = asyncMiddleware(async (req, res) => {
         .json(new ApiResponse(200, {}, "Playlist successfully deleted"));
 });
 
-const appendVideoToPlaylist = asyncMiddleware(async (req, res) => {
+const appendVideoToPlaylist = asyncHandler(async (req, res) => {
     const { playlistId, videoId } = req.params;
 
     if (!mongoose.isValidObjectId(playlistId) || !mongoose.isValidObjectId(videoId)) {
@@ -121,7 +121,7 @@ const appendVideoToPlaylist = asyncMiddleware(async (req, res) => {
         .json(new ApiResponse(200, updatedPlaylist, "Video added to playlist successfully"));
 });
 
-const removeVideoFromPlaylist = asyncMiddleware(async (req, res) => {
+const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
     const { playlistId, videoId } = req.params;
 
     if (!mongoose.isValidObjectId(playlistId) || !mongoose.isValidObjectId(videoId)) {
@@ -154,7 +154,7 @@ const removeVideoFromPlaylist = asyncMiddleware(async (req, res) => {
         .json(new ApiResponse(200, updatedPlaylist, "Video removed from playlist successfully"));
 });
 
-const fetchPlaylistById = asyncMiddleware(async (req, res) => {
+const fetchPlaylistById = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
 
     if (!mongoose.isValidObjectId(playlistId)) {
@@ -219,7 +219,7 @@ const fetchPlaylistById = asyncMiddleware(async (req, res) => {
         .json(new ApiResponse(200, playlistDetails[0], "Playlist details retrieved successfully"));
 });
 
-const fetchUserPlaylists = asyncMiddleware(async (req, res) => {
+const fetchUserPlaylists = asyncHandler(async (req, res) => {
     const { userId } = req.params;
 
     if (!mongoose.isValidObjectId(userId)) {

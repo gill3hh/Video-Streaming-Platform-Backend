@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import asynchandler from "../utils/asyncHandler.js";
-import {Subscription} from "../models/subscription.model.js";
+import {asyncHandler} from "../utils/asyncHandler.js";
+import {Subscription} from "../models/subscription.models.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const switchSubscription = asynchandler(async (req, res) => {
+const switchSubscription = asyncHandler(async (req, res) => {
     const { channelId } = req.params;
 
     if (!mongoose.isValidObjectId(channelId)) {
@@ -35,7 +35,7 @@ const switchSubscription = asynchandler(async (req, res) => {
 });
 
 // Controller to fetch the list of subscribers for a specific channel
-const fetchChannelSubscribers = asynchandler(async (req, res) => {
+const fetchChannelSubscribers = asyncHandler(async (req, res) => {
     let { channelId } = req.params;
 
     if (!mongoose.isValidObjectId(channelId)) {
@@ -98,7 +98,7 @@ const fetchChannelSubscribers = asynchandler(async (req, res) => {
 });
 
 // Controller to fetch the list of channels to which a user has subscribed
-const fetchSubscribedChannels = asynchandler(async (req, res) => {
+const fetchSubscribedChannels = asyncHandler(async (req, res) => {
     const { subscriberId } = req.params;
 
     const subscribedChannelsList = await Subscription.aggregate([

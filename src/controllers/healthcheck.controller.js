@@ -1,7 +1,7 @@
-import asyncHandler from "../utils/asyncHandler.js";
-import {Tweet} from "../models/tweet.model.js";
+import {asyncHandler} from "../utils/asyncHandler.js";
+import {Tweet} from "../models/tweet.models.js";
 import mongoose, {isValidObjectId} from "mongoose";
-import {User} from "../models/user.model.js";
+import {User} from "../models/user.models.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 

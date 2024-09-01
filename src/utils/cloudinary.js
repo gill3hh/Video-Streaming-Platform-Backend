@@ -35,4 +35,19 @@ const uploadOnCloudinary = async (localFilePath)=> {
 // fs.unlink it works like delete in file system(fs) instead of delete we say unlink and to add we say link. 
 // here we specifically used Sync aswell making sure that this has to be done otherwise we wont go ahead. 
 
-export {uploadOnCloudinary}
+const deleteOnCloudinary = async (public_id, resource_type="image") => {
+   try {
+       if (!public_id) return null;
+
+       //delete file from cloudinary
+       const result = await cloudinary.uploader.destroy(public_id, {
+           resource_type: `${resource_type}`
+       });
+   } catch (error) {
+       return error;
+       console.log("delete on cloudinary failed", error);
+   }
+};
+
+
+export {uploadOnCloudinary, deleteOnCloudinary}
