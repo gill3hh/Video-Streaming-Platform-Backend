@@ -112,7 +112,7 @@ const uploadVideo = asyncHandler(async (req, res) => {
     const video = await Video.create({
         title,
         description,
-        duration: videoFile.duration,
+        duration: Number(videoFile.duration),
         videoFile: {
             url: videoFile.url,
             public_id: videoFile.public_id
