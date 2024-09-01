@@ -76,19 +76,21 @@ Clone the repository to your local machine using Git.
 ```bash
 git clone https://github.com/gill3hh/Video-Streaming-Platform-Backend.git
 ```
-### 2. Navigate to Project Directory and Install Dependencies
+### 2. Navigate to Project Directory
 ```bash
 cd Video-Streaming-Platform-Backend
+```
+### 3. Install Dependencies
+```bash
 npm install
 ```
-### 3. Setup Environment Variables
+### 4. Setup Environment Variables
 Create a `.env` file in the root of the project directory and add the necessary environment variables. Use the `.env.example` file as a template
-
-### 4. Start the Development Server
+### 5. Start the Development Server
 ```bash
 npm run dev
 ```
 ## Acknowlegments
-This project was inspired by [ChaiAurCode](https://www.youtube.com/@chaiaurcode)
-I want to emplasize that i have written all the controllers, routes and injected them into project by myself, with the exception of User controller as it was inspired by the tutorial.
-All other controllers were given as assignment to complete and i have implemented by undersatnding of the concepts learned. 
++ This project was inspired by [ChaiAurCode](https://www.youtube.com/@chaiaurcode)
++ I want to emplasize that i have written all the controllers, routes and injected them into project by myself, with the exception of User controller as it was inspired by the tutorial.
++ All other controllers were given as assignment to complete and i have implemented by undersatnding of the concepts learned. 
