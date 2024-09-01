@@ -109,10 +109,17 @@ const uploadVideo = asyncHandler(async (req, res) => {
         throw new ApiError(400, "File upload failed");
     }
 
+    const duration = Number(videoFile.duration);
+
+    // Validate the duration
+    if (isNaN(duration)) {
+        throw new ApiError(400, "Invalid duration received from Cloudinary");
+    }
+
     const video = await Video.create({
         title,
         description,
-        duration: Number(videoFile.duration),
+        duration: duration, // Use validated duration
         videoFile: {
             url: videoFile.url,
             public_id: videoFile.public_id
@@ -133,6 +140,7 @@ const uploadVideo = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, video, "Video uploaded successfully"));
 });
+
 
 // Get video details by ID
 const fetchVideoById = asyncHandler(async (req, res) => {
