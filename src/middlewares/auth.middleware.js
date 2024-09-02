@@ -1,6 +1,6 @@
 // we are creating our own middleware this is for the cookies and jwt, 
 
-import { ApiError } from "../utils/ApiError.js";
+import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken"
 import { User } from "../models/user.models.js";
