@@ -157,22 +157,12 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
 const fetchPlaylistById = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
 
-    if (!isValidObjectId(playlistId)) {
-        throw new ApiError(400, "Invalid PlaylistId");
+    if (!mongoose.isValidObjectId(playlistId)) {
+        throw new ApiError(400, "Invalid Playlist ID");
     }
 
-    const playlist = await Playlist.findById(playlistId);
-
-    if (!playlist) {
-        throw new ApiError(404, "Playlist not found");
-    }
-
-    const playlistVideos = await Playlist.aggregate([
-        {
-            $match: {
-                _id: new mongoose.Types.ObjectId(playlistId)
-            }
-        },
+    const playlistDetails = await Playlist.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(playlistId) } },
         {
             $lookup: {
                 from: "videos",
@@ -181,11 +171,7 @@ const fetchPlaylistById = asyncHandler(async (req, res) => {
                 as: "videos",
             }
         },
-        {
-            $match: {
-                "videos.isPublished": true
-            }
-        },
+        { $match: { "videos.isPublished": true } },
         {
             $lookup: {
                 from: "users",
@@ -196,15 +182,9 @@ const fetchPlaylistById = asyncHandler(async (req, res) => {
         },
         {
             $addFields: {
-                totalVideos: {
-                    $size: "$videos"
-                },
-                totalViews: {
-                    $sum: "$videos.views"
-                },
-                owner: {
-                    $first: "$owner"
-                }
+                totalVideos: { $size: "$videos" },
+                totalViews: { $sum: "$videos.views" },
+                owner: { $arrayElemAt: ["$owner", 0] },
             }
         },
         {
@@ -223,21 +203,20 @@ const fetchPlaylistById = asyncHandler(async (req, res) => {
                     description: 1,
                     duration: 1,
                     createdAt: 1,
-                    views: 1
+                    views: 1,
                 },
                 owner: {
                     username: 1,
                     fullName: 1,
-                    "avatar.url": 1
-                }
+                    "avatar.url": 1,
+                },
             }
         }
-        
     ]);
 
     return res
         .status(200)
-        .json(new ApiResponse(200, playlistVideos[0], "playlist fetched successfully"));
+        .json(new ApiResponse(200, playlistDetails[0], "Playlist details retrieved successfully"));
 });
 
 const fetchUserPlaylists = asyncHandler(async (req, res) => {
