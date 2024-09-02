@@ -328,11 +328,39 @@ const removeVideo = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Failed to delete video");
     }
 
-    await deleteOnCloudinary(videoToDelete.thumbnail.public_id);
-    await deleteOnCloudinary(videoToDelete.videoFile.public_id, "video");
+    //await deleteOnCloudinary(videoToDelete.thumbnail.public_id);
+    //await deleteOnCloudinary(videoToDelete.videoFile.public_id, "video");
+    try {
+        await deleteOnCloudinary(videoToDelete.thumbnail.public_id);
+    } catch (error) {
+        console.error("Error deleting thumbnail from Cloudinary:", error);
+        throw new ApiError(500, "Error deleting thumbnail from Cloudinary");
+    }
+    
+    try {
+        await deleteOnCloudinary(videoToDelete.videoFile.public_id, "video");
+    } catch (error) {
+        console.error("Error deleting video file from Cloudinary:", error);
+        throw new ApiError(500, "Error deleting video file from Cloudinary");
+    }
+    
 
-    await Like.deleteMany({ video: videoId });
-    await Comment.deleteMany({ video: videoId });
+    //await Like.deleteMany({ video: videoId });
+    //await Comment.deleteMany({ video: videoId });
+    try {
+        await Like.deleteMany({ video: videoId });
+    } catch (error) {
+        console.error("Error deleting associated likes:", error);
+        throw new ApiError(500, "Error deleting associated likes");
+    }
+    
+    try {
+        await Comment.deleteMany({ video: videoId });
+    } catch (error) {
+        console.error("Error deleting associated comments:", error);
+        throw new ApiError(500, "Error deleting associated comments");
+    }
+    
     
     return res
         .status(200)
