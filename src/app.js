@@ -1,7 +1,9 @@
 import express from "express"
 import cors from "cors"
 import cookieparser from "cookie-parser"
-import path from 'path'
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 
 
 const app = express()
@@ -22,6 +24,10 @@ app.use(express.static("public"))
 app.use(cookieparser())
 
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 //routes import
 import userRouter from './routes/user.routes.js';
 import commentRouter from './routes/comment.routes.js';
@@ -37,8 +43,10 @@ import videoRouter from './routes/video.routes.js';
 app.use(express.json({ limit: '160kb' }));
 app.use(express.urlencoded({ extended: true, limit: '160kb' }));
 
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
+// Define a GET route to serve the index.html file
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Home_page', 'index.html'));
+});
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/comment", commentRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
