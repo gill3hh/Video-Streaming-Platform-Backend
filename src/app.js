@@ -34,14 +34,11 @@ import tweetRouter from './routes/tweet.routes.js';
 import videoRouter from './routes/video.routes.js';
 
 
-// routes declaration
-// Serve static files from the 'public' directory
-app.use(express.static(path.resolve('public')));
+app.use(express.json({ limit: '160kb' }));
+app.use(express.urlencoded({ extended: true, limit: '160kb' }));
 
-// Define a GET route to serve the index.html
-app.get('/', (req, res) => {
-    res.sendFile(path.resolve('public', 'index.html'));
-});
+// Serve static files from the 'public' directory
+app.use(express.static('public'));
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/comment", commentRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
