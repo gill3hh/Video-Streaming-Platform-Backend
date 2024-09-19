@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import cookieparser from "cookie-parser"
+import path from 'path'
 
 
 const app = express()
@@ -34,6 +35,13 @@ import videoRouter from './routes/video.routes.js';
 
 
 // routes declaration
+// Serve static files from the 'public' directory
+app.use(express.static(path.resolve('public')));
+
+// Define a GET route to serve the index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve('public', 'index.html'));
+});
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/comment", commentRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
