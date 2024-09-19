@@ -45,7 +45,7 @@ app.use(express.urlencoded({ extended: true, limit: '160kb' }));
 
 // Define a GET route to serve the index.html file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Home_page', 'index.html'));
+    res.sendFile(path.join(__dirname, '../Home_page', 'index.html'));
 });
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/comment", commentRouter);
