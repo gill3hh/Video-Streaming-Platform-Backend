@@ -6,17 +6,19 @@
 }
 
 body {
-   background-color: #121212;
-   color: #f0f0f0;
+   background-color: #1c1c1e; /* Dark theme like MacBook/iPhone */
+   color: #f5f5f7;
    line-height: 1.6;
    padding: 0 20px;
+   max-width: 100%;
+   overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 header {
-   background-color: #1f1f1f;
+   background-color: #2c2c2e;
    padding: 20px 0;
    text-align: center;
-   border-bottom: 3px solid #00bcd4;
+   border-bottom: 3px solid #636366; /* Subtle border for better contrast */
 }
 
 nav ul {
@@ -31,7 +33,7 @@ nav ul li {
 }
 
 nav ul li a {
-   color: #f0f0f0;
+   color: #f5f5f7;
    text-decoration: none;
    font-weight: bold;
    font-size: 18px;
@@ -39,11 +41,26 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-   color: #00bcd4;
+   color: #a1a1a1;
+}
+
+/* GitHub button specific styling */
+nav ul li a.btn {
+   background-color: #48484a;
+   color: #f5f5f7;
+   padding: 10px 15px;
+   border-radius: 5px;
+   transition: background-color 0.3s ease;
+   border: 2px solid #48484a;
+}
+
+nav ul li a.btn:hover {
+   background-color: #636366; /* Darker shade on hover */
+   border-color: #636366;
 }
 
 .hero {
-   background-color: #333;
+   background-color: #3a3a3c;
    padding: 60px 20px;
    text-align: center;
    border-radius: 8px;
@@ -51,47 +68,58 @@ nav ul li a:hover {
 }
 
 .hero h1 {
-   font-size: 3em;
-   color: #00bcd4;
+   font-size: 2.5em;
+   color: #f5f5f7;
    margin-bottom: 15px;
 }
 
 .hero p {
    font-size: 1.2em;
-   color: #ccc;
+   color: #a1a1a1;
 }
 
-section {
-   margin: 40px 0;
+/* Section headings */
+section h2 {
+   font-size: 2em;
+   margin-bottom: 20px;
+   color: #f5f5f7;
    text-align: center;
 }
 
-h2 {
-   font-size: 2em;
-   margin-bottom: 20px;
-   color: #00bcd4;
+/* Section paragraph */
+section p {
+   font-size: 1.1em;
+   color: #a1a1a1;
+   text-align: center;
 }
 
-p {
-   font-size: 1.2em;
-   color: #ccc;
-}
-
-ul {
+/* Core features list */
+#features ul {
    list-style-type: none;
    padding: 0;
+   margin: 0 auto; /* Center the list */
+   width: fit-content;
 }
 
-ul li {
+#features ul li {
    font-size: 1.2em;
    margin: 10px 0;
-   color: #f0f0f0;
+   color: #f5f5f7;
+   text-align: left; /* Align points to the left */
+   padding-left: 15px;
 }
 
+#features ul li::before {
+   content: '•';
+   color: #f5f5f7; /* Custom bullet color */
+   padding-right: 10px;
+}
+
+/* Buttons styling */
 .btn {
    display: inline-block;
-   background-color: #00bcd4;
-   color: #121212;
+   background-color: #48484a;
+   color: #f5f5f7;
    padding: 10px 20px;
    text-transform: uppercase;
    font-weight: bold;
@@ -99,27 +127,40 @@ ul li {
    text-decoration: none;
    transition: background-color 0.3s ease;
    margin-top: 15px;
+   border: 2px solid #48484a;
 }
 
 .btn:hover {
-   background-color: #0097a7;
-   color: #f0f0f0;
+   background-color: #636366;
+   border-color: #636366;
 }
 
 footer {
-   background-color: #1f1f1f;
+   background-color: #2c2c2e;
    padding: 20px;
    text-align: center;
-   color: #ccc;
+   color: #a1a1a1;
    margin-top: 40px;
-   border-top: 3px solid #00bcd4;
+   border-top: 3px solid #636366;
 }
 
 footer a {
-   color: #00bcd4;
+   color: #f5f5f7;
    text-decoration: underline;
 }
 
 footer a:hover {
-   color: #0097a7;
+   color: #a1a1a1;
+}
+
+/* Keep sections compact and avoid unnecessary scrolling */
+section {
+   margin: 40px 0;
+   text-align: center;
+}
+
+main {
+   max-width: 1000px;
+   margin: 0 auto; /* Center the content */
+   padding: 20px;
 }
