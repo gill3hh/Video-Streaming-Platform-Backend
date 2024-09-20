@@ -6,19 +6,19 @@
 }
 
 body {
-   background-color: #1c1c1e; /* Dark theme like MacBook/iPhone */
+   background-color: #1e1e2f; /* Dark but with slight color contrast */
    color: #f5f5f7;
    line-height: 1.6;
    padding: 0 20px;
    max-width: 100%;
-   overflow-x: hidden; /* Prevent horizontal scrolling */
+   overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 header {
-   background-color: #2c2c2e;
+   background-color: #29293f;
    padding: 20px 0;
    text-align: center;
-   border-bottom: 3px solid #636366; /* Subtle border for better contrast */
+   border-bottom: 4px solid #3a3a52; /* Slight contrast for bottom border */
 }
 
 nav ul {
@@ -41,26 +41,27 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-   color: #a1a1a1;
+   color: #c4c4dd; /* Slight hover contrast */
 }
 
 /* GitHub button specific styling */
 nav ul li a.btn {
-   background-color: #48484a;
-   color: #f5f5f7;
-   padding: 10px 15px;
-   border-radius: 5px;
+   background-color: #3b82f6; /* Proper blue for better visibility */
+   color: white;
+   padding: 10px 25px; /* Larger padding for a more prominent button */
+   border-radius: 6px;
    transition: background-color 0.3s ease;
-   border: 2px solid #48484a;
+   border: 2px solid #3b82f6;
+   font-size: 16px;
 }
 
 nav ul li a.btn:hover {
-   background-color: #636366; /* Darker shade on hover */
-   border-color: #636366;
+   background-color: #2563eb; /* Slightly darker blue on hover */
+   border-color: #2563eb;
 }
 
 .hero {
-   background-color: #3a3a3c;
+   background-color: #2d2d44; /* Slight color for contrast */
    padding: 60px 20px;
    text-align: center;
    border-radius: 8px;
@@ -68,28 +69,33 @@ nav ul li a.btn:hover {
 }
 
 .hero h1 {
-   font-size: 2.5em;
-   color: #f5f5f7;
+   font-size: 2.8em;
+   color: #60a5fa; /* Bright blue for more visibility */
    margin-bottom: 15px;
 }
 
 .hero p {
-   font-size: 1.2em;
-   color: #a1a1a1;
+   font-size: 1.3em;
+   color: #d1d1e9; /* Light contrast for text */
 }
 
-/* Section headings */
-section h2 {
-   font-size: 2em;
-   margin-bottom: 20px;
-   color: #f5f5f7;
+main {
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 20px;
    text-align: center;
 }
 
-/* Section paragraph */
+section h2 {
+   font-size: 2em;
+   margin-bottom: 20px;
+   color: #60a5fa; /* Match the blue theme */
+   text-align: center;
+}
+
 section p {
    font-size: 1.1em;
-   color: #a1a1a1;
+   color: #d1d1e9; /* Lighter gray for paragraph text */
    text-align: center;
 }
 
@@ -111,15 +117,15 @@ section p {
 
 #features ul li::before {
    content: '•';
-   color: #f5f5f7; /* Custom bullet color */
+   color: #60a5fa; /* Custom bright blue bullet */
    padding-right: 10px;
 }
 
 /* Buttons styling */
 .btn {
    display: inline-block;
-   background-color: #48484a;
-   color: #f5f5f7;
+   background-color: #3b82f6;
+   color: #fff;
    padding: 10px 20px;
    text-transform: uppercase;
    font-weight: bold;
@@ -127,30 +133,30 @@ section p {
    text-decoration: none;
    transition: background-color 0.3s ease;
    margin-top: 15px;
-   border: 2px solid #48484a;
+   border: 2px solid #3b82f6;
 }
 
 .btn:hover {
-   background-color: #636366;
-   border-color: #636366;
+   background-color: #2563eb;
+   border-color: #2563eb;
 }
 
 footer {
-   background-color: #2c2c2e;
+   background-color: #29293f;
    padding: 20px;
    text-align: center;
-   color: #a1a1a1;
+   color: #d1d1e9;
    margin-top: 40px;
-   border-top: 3px solid #636366;
+   border-top: 4px solid #3a3a52;
 }
 
 footer a {
-   color: #f5f5f7;
+   color: #60a5fa;
    text-decoration: underline;
 }
 
 footer a:hover {
-   color: #a1a1a1;
+   color: #2563eb;
 }
 
 /* Keep sections compact and avoid unnecessary scrolling */
@@ -159,8 +165,3 @@ section {
    text-align: center;
 }
 
-main {
-   max-width: 1000px;
-   margin: 0 auto; /* Center the content */
-   padding: 20px;
-}
